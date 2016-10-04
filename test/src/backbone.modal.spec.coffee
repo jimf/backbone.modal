@@ -112,6 +112,16 @@ describe 'Backbone.Modal', ->
       view.render()
       expect(document.activeElement).toBe(view.modalEl.get(0))
 
+    it 'should return early if already rendered', ->
+      view = new modal()
+      view.animate = false
+      view.render()
+      spyOn(view, 'delegateModalEvents')
+      spyOn(view, 'rendererCompleted')
+      view.render()
+      expect(view.delegateModalEvents).not.toHaveBeenCalled()
+      expect(view.rendererCompleted).not.toHaveBeenCalled()
+
   describe '#beforeCancel', ->
     it "should call this method when it's defined", ->
       view = new modal()

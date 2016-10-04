@@ -66,6 +66,9 @@
         if (typeof this.onRender === "function") {
           this.onRender();
         }
+        if (this.active) {
+          return true;
+        }
         this.delegateModalEvents();
         if (this.$el.fadeIn && this.animate) {
           this.modalEl.css({

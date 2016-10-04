@@ -165,13 +165,24 @@
         view.render();
         return expect(view.previousFocus).toEqual(expected);
       });
-      return it('should focus modal div', function() {
+      it('should focus modal div', function() {
         var view;
         view = new modal();
         view.animate = false;
         Backbone.$('body').append(view.$el);
         view.render();
         return expect(document.activeElement).toBe(view.modalEl.get(0));
+      });
+      return it('should return early if already rendered', function() {
+        var view;
+        view = new modal();
+        view.animate = false;
+        view.render();
+        spyOn(view, 'delegateModalEvents');
+        spyOn(view, 'rendererCompleted');
+        view.render();
+        expect(view.delegateModalEvents).not.toHaveBeenCalled();
+        return expect(view.rendererCompleted).not.toHaveBeenCalled();
       });
     });
     describe('#beforeCancel', function() {
