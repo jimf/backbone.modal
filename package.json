@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "grunt",
-    "test": "grunt test"
+    "test": "grunt build test"
   },
   "bugs": "https://github.com/jimf/backbone.modal/issues",
   "devDependencies": {

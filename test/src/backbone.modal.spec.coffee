@@ -105,6 +105,13 @@ describe 'Backbone.Modal', ->
       view.render()
       expect(view.previousFocus).toEqual(expected)
 
+    it 'should focus modal div', ->
+      view = new modal()
+      view.animate = false
+      Backbone.$('body').append(view.$el)
+      view.render()
+      expect(document.activeElement).toBe(view.modalEl.get(0))
+
   describe '#beforeCancel', ->
     it "should call this method when it's defined", ->
       view = new modal()

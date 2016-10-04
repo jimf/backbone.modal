@@ -26,7 +26,8 @@
       options = 0 if !options or _.isEmpty(options)
 
       @$el.addClass("#{@prefix}-wrapper")
-      @modalEl = Backbone.$('<div />').addClass("#{@prefix}-modal")
+      @modalEl = Backbone.$('<div />')
+      @modalEl.addClass("#{@prefix}-modal").attr('tabindex', '-1')
       @modalEl.html @buildTemplate(@template, data) if @template
       @$el.html(@modalEl)
 
@@ -38,8 +39,6 @@
 
       $focusEl = Backbone.$(document.activeElement)
       @previousFocus = $focusEl unless @previousFocus
-      # blur links to prevent double keystroke events
-      $focusEl.blur()
 
       @openAt(options) if @views?.length > 0 and @showViewOnRender
       @onRender?()
@@ -65,6 +64,7 @@
         @$el.on('click.bbm', @clickOutside)
 
       @modalEl.css(opacity: 1).addClass("#{@prefix}-modal--open")
+      @modalEl.focus()
       @onShow?()
       @currentView?.onShow?()
 
