@@ -28,6 +28,7 @@
         this.triggerCancel = bind(this.triggerCancel, this);
         this.triggerSubmit = bind(this.triggerSubmit, this);
         this.triggerView = bind(this.triggerView, this);
+        this.blurModal = bind(this.blurModal, this);
         this.clickOutsideElement = bind(this.clickOutsideElement, this);
         this.clickOutside = bind(this.clickOutside, this);
         this.checkKey = bind(this.checkKey, this);
@@ -154,6 +155,7 @@
         if (cancelEl) {
           this.$el.on('click', cancelEl, this.triggerCancel);
         }
+        this.modalEl.on('focusout', this.blurModal);
         results = [];
         for (key in this.views) {
           if (_.isString(key) && key !== 'length') {
@@ -179,6 +181,7 @@
         if (cancelEl) {
           this.$el.off('click', cancelEl, this.triggerCancel);
         }
+        this.modalEl.off('focusout', this.blurModal);
         results = [];
         for (key in this.views) {
           if (_.isString(key) && key !== 'length') {
@@ -213,6 +216,16 @@
 
       Modal.prototype.clickOutsideElement = function(e) {
         return this.outsideElement = Backbone.$(e.target);
+      };
+
+      Modal.prototype.blurModal = function() {
+        return setTimeout((function(_this) {
+          return function() {
+            if (_this.active && !Backbone.$.contains(_this.el, document.activeElement)) {
+              return _this.modalEl.focus();
+            }
+          };
+        })(this));
       };
 
       Modal.prototype.buildTemplate = function(template, data) {

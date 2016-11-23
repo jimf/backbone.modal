@@ -173,4 +173,21 @@ describe 'Backbone.Modal', ->
   describe '#clickOutside', ->
     it 'should not throw when outsideElement is undefined', ->
       view = new modal()
-      expect(view.clickOutside).not.toThrow();
+      expect(view.clickOutside).not.toThrow()
+
+  describe '#blurModal', ->
+    it 'should refocus modal if modal is active and loses focus', (done) ->
+      $newFocus = Backbone.$('<button id="new-focus">')
+      Backbone.$('body').append($newFocus)
+
+      view = new modal()
+      view.animate = false
+      view.render()
+      Backbone.$('#new-focus').focus()
+
+      setTimeout ->
+        expect(document.activeElement).toEqual(view.modalEl.get(0))
+        Backbone.$('#new-focus').remove()
+        done()
+      , 10
+

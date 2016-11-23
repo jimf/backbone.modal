@@ -249,11 +249,27 @@
         return expect(view.submit).toHaveBeenCalled();
       });
     });
-    return describe('#clickOutside', function() {
+    describe('#clickOutside', function() {
       return it('should not throw when outsideElement is undefined', function() {
         var view;
         view = new modal();
         return expect(view.clickOutside).not.toThrow();
+      });
+    });
+    return describe('#blurModal', function() {
+      return it('should refocus modal if modal is active and loses focus', function(done) {
+        var $newFocus, view;
+        $newFocus = Backbone.$('<button id="new-focus">');
+        Backbone.$('body').append($newFocus);
+        view = new modal();
+        view.animate = false;
+        view.render();
+        Backbone.$('#new-focus').focus();
+        return setTimeout(function() {
+          expect(document.activeElement).toEqual(view.modalEl.get(0));
+          Backbone.$('#new-focus').remove();
+          return done();
+        }, 10);
       });
     });
   });
