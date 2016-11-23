@@ -109,6 +109,7 @@
       # set event handlers for submit and cancel
       @$el.on('click', submitEl, @triggerSubmit) if submitEl
       @$el.on('click', cancelEl, @triggerCancel) if cancelEl
+      @modalEl.on('focusout', @blurModal)
 
       # set event handlers for views
       for key of @views
@@ -129,6 +130,7 @@
       # remove event handlers for submit and cancel
       @$el.off('click', submitEl, @triggerSubmit) if submitEl
       @$el.off('click', cancelEl, @triggerCancel) if cancelEl
+      @modalEl.off('focusout', @blurModal)
 
       # remove event handlers for views
       for key of @views
@@ -150,6 +152,11 @@
       @triggerCancel() if @outsideElement?.hasClass("#{@prefix}-wrapper") and @active
 
     clickOutsideElement: (e) => @outsideElement = Backbone.$(e.target)
+
+    blurModal: =>
+      setTimeout =>
+        if @active and !Backbone.$.contains(@el, document.activeElement)
+          @modalEl.focus()
 
     buildTemplate: (template, data) ->
       if typeof template is 'function'
