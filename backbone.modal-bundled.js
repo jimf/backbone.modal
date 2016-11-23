@@ -51,6 +51,7 @@
           this.modalEl.html(this.buildTemplate(this.template, data));
         }
         this.$el.html(this.modalEl);
+        this.modalEl.after(Backbone.$('<div tabindex="0" />'));
         if (this.viewContainer) {
           this.viewContainerEl = this.modalEl.find(this.viewContainer);
           this.viewContainerEl.addClass(this.prefix + "-modal__views");
@@ -221,7 +222,7 @@
       Modal.prototype.blurModal = function() {
         return setTimeout((function(_this) {
           return function() {
-            if (_this.active && !Backbone.$.contains(_this.el, document.activeElement)) {
+            if (_this.active && !Backbone.$.contains(_this.modalEl.get(0), document.activeElement)) {
               return _this.modalEl.focus();
             }
           };
