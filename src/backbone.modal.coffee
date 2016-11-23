@@ -30,6 +30,7 @@
       @modalEl.addClass("#{@prefix}-modal").attr('tabindex', '-1')
       @modalEl.html @buildTemplate(@template, data) if @template
       @$el.html(@modalEl)
+      @modalEl.after(Backbone.$('<div tabindex="0" />'))
 
       if @viewContainer
         @viewContainerEl = @modalEl.find(@viewContainer)
@@ -155,7 +156,7 @@
 
     blurModal: =>
       setTimeout =>
-        if @active and !Backbone.$.contains(@el, document.activeElement)
+        if @active and !Backbone.$.contains(@modalEl.get(0), document.activeElement)
           @modalEl.focus()
 
     buildTemplate: (template, data) ->
