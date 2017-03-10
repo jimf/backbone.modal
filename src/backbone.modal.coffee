@@ -38,8 +38,8 @@
       else
         @viewContainerEl = @modalEl
 
-      $focusEl = Backbone.$(document.activeElement)
-      @previousFocus = $focusEl unless @previousFocus
+      $prevEl = @previousFocus?()
+      @previousFocusEl = Backbone.$(document.activeElement) unless $prevEl
 
       @openAt(options) if @views?.length > 0 and @showViewOnRender
       @onRender?()
@@ -78,6 +78,7 @@
       @views?.length  = _.size(@views)
       @viewContainer  = @getOption('viewContainer')
       @animate        = @getOption('animate')
+      @previousFocus  = @getOption('previousFocus')
 
       # check if everything is right
       throw new Error('No template or views defined for Backbone.Modal') if _.isUndefined(@template) and _.isUndefined(@views)
@@ -289,7 +290,7 @@
       removeViews = =>
         @currentView?.remove?()
         @remove()
-        @previousFocus?.focus?()
+        @previousFocusEl?.focus?()
 
       if @$el.fadeOut and @animate
         @$el.fadeOut(duration: 200)

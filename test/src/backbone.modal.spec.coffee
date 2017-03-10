@@ -99,11 +99,21 @@ describe 'Backbone.Modal', ->
       view = new modal()
       expect((view.render().el instanceof HTMLElement)).toBeTruthy()
 
-    it 'should save a reference to the previously focused element', ->
-      expected = Backbone.$(document.activeElement)
-      view = new modal()
-      view.render()
-      expect(view.previousFocus).toEqual(expected)
+      it 'should save a reference to the previously focused element', ->
+        expected = Backbone.$(document.activeElement)
+        view = new modal()
+        view.render()
+        expect(view.previousFocusEl).toEqual(expected)
+
+    describe 'previousFocus option is defined', ->
+      beforeEach ->
+        modal.previousFocus = -> Backbone.$(document.activeElement)
+
+      it 'should save a reference to the previously focused element', ->
+        expected = Backbone.$(document.activeElement)
+        view = new modal()
+        view.render()
+        expect(view.previousFocusEl).toEqual(expected)
 
     it 'should focus modal div', ->
       view = new modal()
