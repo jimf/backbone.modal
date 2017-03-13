@@ -21,6 +21,7 @@ describe 'Backbone.Modal', ->
       _shouldSubmit: true
       beforeCancel: -> @_shouldCancel
       beforeSubmit: -> @_shouldSubmit
+      onRemoveComplete: ->
       cancel: ->
       submit: ->
 
@@ -69,6 +70,15 @@ describe 'Backbone.Modal', ->
 
       expect(document.activeElement.id).toEqual('prev-focus')
       Backbone.$('#prev-focus').remove()
+
+  describe '#onRemoveComplete', ->
+    it "should call this method if defined", ->
+      view = new modal()
+      view.animate = false
+      spyOn(view, 'onRemoveComplete')
+      view.render()
+      view.destroy()
+      expect(view.onRemoveComplete).toHaveBeenCalled()
 
   describe '#openAt', ->
     it 'opens a view at the specified index', ->

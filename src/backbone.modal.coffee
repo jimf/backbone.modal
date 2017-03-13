@@ -290,6 +290,7 @@
         @currentView?.remove?()
         @remove()
         @previousFocus?.focus?()
+        @onRemoveComplete?()
 
       if @$el.fadeOut and @animate
         @$el.fadeOut(duration: 200)
