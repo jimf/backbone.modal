@@ -64,6 +64,8 @@
           return this._shouldSubmit;
         };
 
+        modal.prototype.onRemoveComplete = function() {};
+
         modal.prototype.cancel = function() {};
 
         modal.prototype.submit = function() {};
@@ -118,6 +120,17 @@
         view.destroy();
         expect(document.activeElement.id).toEqual('prev-focus');
         return Backbone.$('#prev-focus').remove();
+      });
+    });
+    describe('#onRemoveComplete', function() {
+      return it("should call this method if defined", function() {
+        var view;
+        view = new modal();
+        view.animate = false;
+        spyOn(view, 'onRemoveComplete');
+        view.render();
+        view.destroy();
+        return expect(view.onRemoveComplete).toHaveBeenCalled();
       });
     });
     describe('#openAt', function() {

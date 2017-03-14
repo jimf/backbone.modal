@@ -441,7 +441,12 @@
               }
             }
             _this.remove();
-            return (ref1 = _this.previousFocus) != null ? typeof ref1.focus === "function" ? ref1.focus() : void 0 : void 0;
+            if ((ref1 = _this.previousFocus) != null) {
+              if (typeof ref1.focus === "function") {
+                ref1.focus();
+              }
+            }
+            return typeof _this.onRemoveComplete === "function" ? _this.onRemoveComplete() : void 0;
           };
         })(this);
         if (this.$el.fadeOut && this.animate) {
