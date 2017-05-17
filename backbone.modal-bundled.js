@@ -367,12 +367,16 @@
       };
 
       Modal.prototype.triggerSubmit = function(e) {
-        var ref, ref1;
+        var $target, ref, ref1, submitEl;
         if (e != null) {
           e.preventDefault();
         }
-        if (Backbone.$(e != null ? e.target : void 0).is('textarea')) {
-          return;
+        $target = Backbone.$(e != null ? e.target : void 0);
+        submitEl = this.getOption('submitEl');
+        if ($target.is('a,button,textarea,[role=button]')) {
+          if (!submitEl || $target.get(0) !== this.$(submitEl).get(0)) {
+            return;
+          }
         }
         if (this.beforeSubmit) {
           if (this.beforeSubmit(e) === false) {
@@ -384,7 +388,7 @@
             return;
           }
         }
-        if (!this.submit && !((ref = this.currentView) != null ? ref.submit : void 0) && !this.getOption('submitEl')) {
+        if (!this.submit && !((ref = this.currentView) != null ? ref.submit : void 0) && !submitEl) {
           return this.triggerCancel();
         }
         if ((ref1 = this.currentView) != null) {

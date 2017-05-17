@@ -225,11 +225,60 @@
       });
     });
     describe('#triggerSubmit', function() {
-      return it('should not throw when called without an event', function() {
+      it('should not throw when called without an event', function() {
         var view;
         view = new modal();
         view.render();
         return expect(view.triggerSubmit).not.toThrow();
+      });
+      it('should return early if target is a link', function() {
+        var e, view;
+        view = new modal();
+        view.render();
+        e = {
+          preventDefault: function() {},
+          target: document.createElement('a')
+        };
+        spyOn(view, 'beforeSubmit');
+        view.triggerSubmit(e);
+        return expect(view.beforeSubmit).not.toHaveBeenCalled();
+      });
+      it('should return early if target is a button', function() {
+        var e, view;
+        view = new modal();
+        view.render();
+        e = {
+          preventDefault: function() {},
+          target: document.createElement('button')
+        };
+        spyOn(view, 'beforeSubmit');
+        view.triggerSubmit(e);
+        return expect(view.beforeSubmit).not.toHaveBeenCalled();
+      });
+      it('should return early if target is a textarea', function() {
+        var e, view;
+        view = new modal();
+        view.render();
+        e = {
+          preventDefault: function() {},
+          target: document.createElement('textarea')
+        };
+        spyOn(view, 'beforeSubmit');
+        view.triggerSubmit(e);
+        return expect(view.beforeSubmit).not.toHaveBeenCalled();
+      });
+      return it('should return early if target has role=button', function() {
+        var e, view;
+        view = new modal();
+        view.render();
+        e = {
+          preventDefault: function() {},
+          target: document.createElement('div')
+        };
+        e.target.setAttribute('role', 'button');
+        spyOn(view, 'beforeSubmit');
+        view.triggerSubmit(e);
+        return expect(view.beforeSubmit).not.toHaveBeenCalled();
       });
     });
     describe('#beforeSubmit', function() {
