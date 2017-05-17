@@ -248,12 +248,18 @@
     triggerSubmit: (e) =>
       e?.preventDefault()
 
-      return if Backbone.$(e?.target).is('textarea')
+      $target = Backbone.$(e?.target)
+      submitEl = @getOption('submitEl')
+
+      # Return if element has expected ENTER functionality and isn't the submitEl.
+      if $target.is('a,button,textarea,[role=button]')
+        if !submitEl or $target.get(0) isnt @$(submitEl).get(0)
+          return
 
       return if @beforeSubmit(e) is false if @beforeSubmit
       return if @currentView.beforeSubmit(e) is false if @currentView and @currentView.beforeSubmit
 
-      return @triggerCancel() if !@submit and !@currentView?.submit and !@getOption('submitEl')
+      return @triggerCancel() if !@submit and !@currentView?.submit and !submitEl
 
       @currentView?.submit?()
       @submit?()

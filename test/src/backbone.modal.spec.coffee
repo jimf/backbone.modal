@@ -159,6 +159,47 @@ describe 'Backbone.Modal', ->
       view.render()
       expect(view.triggerSubmit).not.toThrow()
 
+    it 'should return early if target is a link', ->
+      view = new modal()
+      view.render()
+      e =
+        preventDefault: ->
+        target: document.createElement('a')
+      spyOn(view, 'beforeSubmit')
+      view.triggerSubmit(e)
+      expect(view.beforeSubmit).not.toHaveBeenCalled()
+
+    it 'should return early if target is a button', ->
+      view = new modal()
+      view.render()
+      e =
+        preventDefault: ->
+        target: document.createElement('button')
+      spyOn(view, 'beforeSubmit')
+      view.triggerSubmit(e)
+      expect(view.beforeSubmit).not.toHaveBeenCalled()
+
+    it 'should return early if target is a textarea', ->
+      view = new modal()
+      view.render()
+      e =
+        preventDefault: ->
+        target: document.createElement('textarea')
+      spyOn(view, 'beforeSubmit')
+      view.triggerSubmit(e)
+      expect(view.beforeSubmit).not.toHaveBeenCalled()
+
+    it 'should return early if target has role=button', ->
+      view = new modal()
+      view.render()
+      e =
+        preventDefault: ->
+        target: document.createElement('div')
+      e.target.setAttribute('role', 'button')
+      spyOn(view, 'beforeSubmit')
+      view.triggerSubmit(e)
+      expect(view.beforeSubmit).not.toHaveBeenCalled()
+
   describe '#beforeSubmit', ->
     it "should call this method when it's defined", ->
       view = new modal()
